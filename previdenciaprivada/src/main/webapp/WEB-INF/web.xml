@@ -17,6 +17,10 @@
 	<listener>
         <listener-class>org.jboss.weld.environment.servlet.Listener</listener-class>
     </listener>
+    
+    <welcome-file-list>
+    	<welcome-file>index.xhtml</welcome-file>
+    </welcome-file-list>
 
     <resource-env-ref>
         <resource-env-ref-name>BeanManager</resource-env-ref-name>
