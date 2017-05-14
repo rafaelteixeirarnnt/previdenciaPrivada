@@ -1,6 +1,8 @@
 package br.com.quality.controller;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -20,6 +22,7 @@ import br.com.quality.builder.FundosBuilder;
 import br.com.quality.util.Constantes;
 import br.com.quality.vo.CalculoPrevidenciaVO;
 import br.com.quality.vo.FundosVO;
+import br.com.quality.vo.ProjecaoVO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,13 +36,9 @@ public class CalculoPrevidenciaPrivada implements Serializable {
 	@Setter
 	private CalculoPrevidenciaVO calculoPrevidenciaVO;
 	
-	@Getter
-	@Setter
-	private boolean mostrar;
 
 	@PostConstruct
 	public void inicializar() {
-		setMostrar(false);
 		CalculoPrevidenciaBuilder builder = new CalculoPrevidenciaBuilder();
 		calculoPrevidenciaVO = builder.comNome("").comContribuicaoX(new Double(0)).comContribuicaoY(new Double(0))
 				.comSalario(new Double(0)).comTempoContribuicao(new Integer(2)).comGraficoAnimado(new BarChartModel())
@@ -49,24 +48,32 @@ public class CalculoPrevidenciaPrivada implements Serializable {
 	public void calcular() {
 		Double reajusteAnual = new Double(Constantes.REAJUSTE_ANUAL);
 		FundosBuilder fundosBuilder = new FundosBuilder();
-		FundosVO fundosVO = fundosBuilder.comFundoX(new Double(0)).comFundoY(new Double(0)).gerarFundosVO();
 		Double salarioExcedente = new Double(calculoPrevidenciaVO.getSalario() * (50.0 / 100));
 		Double reajusteSalarial = new Double(0);
+		FundosVO fundosVO = fundosBuilder.comFundoX(new Double(0)).comFundoY(new Double(0)).gerarFundosVO();
 		
 		BarChartModel model = criarPanel();
+		ChartSeries linhaX = linhaGrafico();
+		ChartSeries linhaY = linhaGrafico();
+		linhaX.setLabel("Contribuição X");
+		linhaY.setLabel("Contribuição Y");
 		
-
+		List<ProjecaoVO> projecaoVOs = new ArrayList<>();
+		
 		if (validarCampos(calculoPrevidenciaVO)) {
 			for (int i = 0; i < calculoPrevidenciaVO.getTempoContribuicao(); i++) {
 				fundosVO = recolhimentoAnual(salarioExcedente, fundosVO, reajusteSalarial);
 				reajusteSalarial += reajusteAnual(reajusteAnual);
-				ChartSeries linhaX = linhaGrafico();
-				ChartSeries linhaY = linhaGrafico();
-				calculoPrevidenciaVO.setGraficoAnimado(popularGrafico((2017 + i), fundosVO, linhaX, linhaY, model));
+				ProjecaoVO projecaoVO = new ProjecaoVO();
+				projecaoVO.setAno(2017 + i);
+				projecaoVO.setFundosVO(fundosBuilder.comFundoX(new Double(fundosVO.getFundoX()))
+													.comFundoY(new Double(fundosVO.getFundoY()))
+													.gerarFundosVO());
+				projecaoVOs.add(projecaoVO);
 			}
+			calculoPrevidenciaVO.setGraficoAnimado(popularGrafico(projecaoVOs, linhaX, linhaY, model));
 		}
 		
-		setMostrar(true);
 		calculoPrevidenciaVO.getGraficoAnimado().setTitle("Demostrativo");
 		calculoPrevidenciaVO.getGraficoAnimado().setAnimate(true);
 		calculoPrevidenciaVO.getGraficoAnimado().setLegendPosition("ne");
@@ -112,8 +119,7 @@ public class CalculoPrevidenciaPrivada implements Serializable {
 			boolean valido, String cont) {
 		if (!(contribuicao >= CONTRIBUICAO_MINIMA && contribuicao <= CONTRIBUICAO_MAXIMA)) {
 			valido = false;
-			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage("Por favor, informe o CONTRIBUIÇÃO" + cont));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Por favor, informe o CONTRIBUIÇÃO" + cont));
 		} 
 		return valido;
 	}
@@ -148,17 +154,16 @@ public class CalculoPrevidenciaPrivada implements Serializable {
 		return reajusteSalarial;
 	}
 	
-	private BarChartModel popularGrafico(Integer ano, FundosVO fundosVO, ChartSeries contribuicaoX, 
+	private BarChartModel popularGrafico(List<ProjecaoVO> projecaoVOs, ChartSeries contribuicaoX, 
 		ChartSeries contribuicaoY, BarChartModel model) {
         
-        contribuicaoX.setLabel("Contribuição X " + ano + " = " + String.format("%.2f", fundosVO.getFundoX()));
-        contribuicaoX.set(ano, fundosVO.getFundoX());
- 
-        contribuicaoY.setLabel("Contribuição Y = " + ano + " = "+ String.format("%.2f", fundosVO.getFundoY()));
-        contribuicaoY.set(ano, fundosVO.getFundoY());
+		projecaoVOs.forEach(p -> {
+			contribuicaoX.set(p.getAno(), p.getFundosVO().getFundoX());
+			contribuicaoY.set(p.getAno(), p.getFundosVO().getFundoY());
+		});
+        
         model.addSeries(contribuicaoX);
         model.addSeries(contribuicaoY);
-         
         return model;
     }
 	
