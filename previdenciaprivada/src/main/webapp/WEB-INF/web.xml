@@ -14,7 +14,4 @@
 		<url-pattern>*.xhtml</url-pattern>
 	</servlet-mapping>
 
-	<listener>
-		<listener-class>br.com.quality.util.AppContextListener</listener-class>
-	</listener>
 </web-app>

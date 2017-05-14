@@ -28,13 +28,17 @@ import lombok.Setter;
 
 @ManagedBean
 @RequestScoped
-public class CalculoPrevidenciaPrivada implements Serializable {
+public class CalculoPrevidenciaPrivadaController implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Getter
 	@Setter
 	private CalculoPrevidenciaVO calculoPrevidenciaVO;
+	
+	@Getter
+	@Setter
+	private  BarChartModel grafico = new BarChartModel();
 	
 
 	@PostConstruct
@@ -78,11 +82,13 @@ public class CalculoPrevidenciaPrivada implements Serializable {
 		calculoPrevidenciaVO.getGraficoAnimado().setAnimate(true);
 		calculoPrevidenciaVO.getGraficoAnimado().setLegendPosition("ne");
 		calculoPrevidenciaVO.getGraficoAnimado().setShowPointLabels(true);
-		calculoPrevidenciaVO.getGraficoAnimado().setLegendCols(2);
 		calculoPrevidenciaVO.getGraficoAnimado().setLegendPlacement(LegendPlacement.OUTSIDE);
 		calculoPrevidenciaVO.getGraficoAnimado().getAxis(AxisType.Y);
 		calculoPrevidenciaVO.getGraficoAnimado().getAxes().put(AxisType.X, new CategoryAxis("Anos"));
 		
+		grafico = calculoPrevidenciaVO.getGraficoAnimado();
+		
+		inicializar();
 	}
 
 	public boolean validarCampos(CalculoPrevidenciaVO cp) {
