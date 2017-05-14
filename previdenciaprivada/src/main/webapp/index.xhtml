@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Previdência Privada</title>
+</h:head>
+<h:body>
+	<h:form>
+		<p:messages />
+		<p:panel header="Cálculo de Previdência Privada">
+			<p:panelGrid columns="2">
+				<p:outputLabel value="Nome: " />
+				<p:inputText
+					value="#{calculoPrevidenciaPrivada.calculoPrevidenciaVO.nome}"
+					required="true" requiredMessage="Por favor, Informe o nome" />
+				<p:outputLabel value="Salário: " />
+				<p:inputNumber
+					value="#{calculoPrevidenciaPrivada.calculoPrevidenciaVO.salario}"
+					maxlength="10" required="true"
+					requiredMessage="Por favor, Informe o salário" />
+				<p:outputLabel value="Contribuição X: " />
+				<p:inputMask
+					value="#{calculoPrevidenciaPrivada.calculoPrevidenciaVO.contribuicaoX}"
+					required="true" mask="9.?99%"
+					requiredMessage="Por favor, Informe a porcentagem da contribuição X" />
+				<p:outputLabel value="Contribuição Y: " />
+				<p:inputMask
+					value="#{calculoPrevidenciaPrivada.calculoPrevidenciaVO.contribuicaoY}"
+					required="true" mask="9.?99%"
+					requiredMessage="Por favor, Informe a porcentagem da contribuição Y" />
+				<p:outputLabel value="Tempo de Contribuição: " />
+				<p:inputMask maxlength="2"
+					value="#{calculoPrevidenciaPrivada.calculoPrevidenciaVO.tempoContribuicao}"
+					required="true"
+					requiredMessage="Por favor, Informe o tempo de contribuição"
+					mask="9?9" />
+				<p:commandButton value="Calcular"
+					action="#{calculoPrevidenciaPrivada.calcular}" ajax="false"
+					icon="ui-icon-calculator" update="grafico"/>
+			</p:panelGrid>
+		</p:panel>
+
+			<p:chart type="bar" model="#{calculoPrevidenciaPrivada.calculoPrevidenciaVO.graficoAnimado}"
+				style="width:69%;" responsive="true"/>
+
+	</h:form>
+</h:body>
+</html>
