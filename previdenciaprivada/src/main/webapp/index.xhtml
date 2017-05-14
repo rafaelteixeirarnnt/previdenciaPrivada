@@ -20,7 +20,7 @@
 				<p:outputLabel value="Salário: " />
 				<p:inputNumber
 					value="#{calculoPrevidenciaPrivadaController.calculoPrevidenciaVO.salario}"
-					maxlength="10" required="true"
+					maxlength="10" required="true" minValue="0"
 					requiredMessage="Por favor, Informe o salário" />
 				<p:outputLabel value="Contribuição X: " />
 				<p:inputMask
@@ -44,9 +44,11 @@
 			</p:panelGrid>
 		</p:panel>
 
-		<p:chart type="bar"
-			model="#{calculoPrevidenciaPrivadaController.grafico}"
-			style="width:69%;" responsive="true" />
+		<div align="center" style="margin-top: 50px;">
+			<p:chart type="bar"
+				model="#{calculoPrevidenciaPrivadaController.grafico}"
+				style="width:80%;" responsive="true" />
+		</div>
 
 	</h:form>
 </h:body>
