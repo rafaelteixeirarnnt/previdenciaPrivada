@@ -41,7 +41,7 @@ public class CalculoPrevidenciaPrivadaController implements Serializable {
 
 	@Inject
 	private CalculoPrevidenciaPrivadaRN calculoPrevidenciaPrivadaRN;
-	
+
 	@PostConstruct
 	public void inicializar() {
 		CalculoPrevidenciaBuilder builder = new CalculoPrevidenciaBuilder();
@@ -63,8 +63,8 @@ public class CalculoPrevidenciaPrivadaController implements Serializable {
 		ChartSeries linhaX = new ChartSeries();
 		ChartSeries linhaY = new ChartSeries();
 
-		linhaX.setLabel("Contribuição X");
-		linhaY.setLabel("Contribuição Y");
+		linhaX.setLabel("Contribuiï¿½ï¿½o X");
+		linhaY.setLabel("Contribuiï¿½ï¿½o Y");
 		calculoPrevidenciaVO.setGraficoAnimado(popularGrafico(projecaoVOs, linhaX, linhaY, model));
 		grafico = calculoPrevidenciaVO.getGraficoAnimado();
 
@@ -94,9 +94,9 @@ public class CalculoPrevidenciaPrivadaController implements Serializable {
 		boolean valido = true;
 		valido = validarNome(cp, valido);
 		valido = validarContribuicao(cp.getContribuicaoX(), Constantes.CONTRIBUICAO_MINIMA_X,
-				Constantes.CONTRIBUICAO_MAXIMA_X, valido, " X no intervalo de 1 à 4");
+				Constantes.CONTRIBUICAO_MAXIMA_X, valido, " X no intervalo de 1 ï¿½ 4");
 		valido = validarContribuicao(cp.getContribuicaoY(), Constantes.CONTRIBUICAO_MINIMA_Y,
-				Constantes.CONTRIBUICAO_MAXIMA_Y, valido, " Y no intervalo de 0 à 8");
+				Constantes.CONTRIBUICAO_MAXIMA_Y, valido, " Y no intervalo de 0 ï¿½ 8");
 		valido = validarSalario(cp, valido);
 		valido = validarTempoContribuicao(cp, valido);
 		return valido;
@@ -107,7 +107,7 @@ public class CalculoPrevidenciaPrivadaController implements Serializable {
 				&& cp.getTempoContribuicao() <= Constantes.TEMPO_MAXIMO_CONTRIBUICAO)) {
 			valido = false;
 			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage("Por favor, informe o TEMPO DE CONTRIBUIÇÃO no intervalo entre 2 à 35"));
+					new FacesMessage("Por favor, informe o TEMPO DE CONTRIBUIï¿½ï¿½O no intervalo entre 2 ï¿½ 35"));
 		}
 		return valido;
 	}
@@ -115,7 +115,7 @@ public class CalculoPrevidenciaPrivadaController implements Serializable {
 	private boolean validarSalario(CalculoPrevidenciaVO cp, boolean valido) {
 		if (cp.getSalario() == null && cp.getSalario() > 0) {
 			valido = false;
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Por favor, informe o SALÁRIO"));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Por favor, informe o SALï¿½RIO"));
 		}
 		return valido;
 	}
@@ -124,9 +124,9 @@ public class CalculoPrevidenciaPrivadaController implements Serializable {
 			boolean valido, String cont) {
 		if (!(contribuicao >= CONTRIBUICAO_MINIMA && contribuicao <= CONTRIBUICAO_MAXIMA)) {
 			valido = false;
-			
+
 			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage("Por favor, informe o CONTRIBUIÇÃO" + cont));
+					new FacesMessage("Por favor, informe o CONTRIBUIï¿½ï¿½O" + cont));
 		}
 		return valido;
 	}
@@ -138,4 +138,21 @@ public class CalculoPrevidenciaPrivadaController implements Serializable {
 		}
 		return valido;
 	}
+
+	public CalculoPrevidenciaVO getCalculoPrevidenciaVO() {
+		return calculoPrevidenciaVO;
+	}
+
+	public void setCalculoPrevidenciaVO(CalculoPrevidenciaVO calculoPrevidenciaVO) {
+		this.calculoPrevidenciaVO = calculoPrevidenciaVO;
+	}
+
+	public BarChartModel getGrafico() {
+		return grafico;
+	}
+
+	public void setGrafico(BarChartModel grafico) {
+		this.grafico = grafico;
+	}
+
 }

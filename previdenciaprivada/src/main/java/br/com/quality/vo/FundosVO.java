@@ -16,4 +16,20 @@ public class FundosVO {
 		this.fundoY = fundoY;
 	}
 
+	public Double getFundoX() {
+		return fundoX;
+	}
+
+	public void setFundoX(Double fundoX) {
+		this.fundoX = fundoX;
+	}
+
+	public Double getFundoY() {
+		return fundoY;
+	}
+
+	public void setFundoY(Double fundoY) {
+		this.fundoY = fundoY;
+	}
+
 }

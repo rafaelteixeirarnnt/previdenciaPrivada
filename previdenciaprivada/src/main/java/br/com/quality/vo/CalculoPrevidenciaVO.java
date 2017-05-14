@@ -29,6 +29,55 @@ public class CalculoPrevidenciaVO {
 		this.contribuicaoY = contribuicaoY;
 		this.tempoContribuicao = tempoContribuicao;
 		this.graficoAnimado = graficoAnimado;
-		
+
 	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public Double getSalario() {
+		return salario;
+	}
+
+	public void setSalario(Double salario) {
+		this.salario = salario;
+	}
+
+	public Double getContribuicaoX() {
+		return contribuicaoX;
+	}
+
+	public void setContribuicaoX(Double contribuicaoX) {
+		this.contribuicaoX = contribuicaoX;
+	}
+
+	public Double getContribuicaoY() {
+		return contribuicaoY;
+	}
+
+	public void setContribuicaoY(Double contribuicaoY) {
+		this.contribuicaoY = contribuicaoY;
+	}
+
+	public Integer getTempoContribuicao() {
+		return tempoContribuicao;
+	}
+
+	public void setTempoContribuicao(Integer tempoContribuicao) {
+		this.tempoContribuicao = tempoContribuicao;
+	}
+
+	public BarChartModel getGraficoAnimado() {
+		return graficoAnimado;
+	}
+
+	public void setGraficoAnimado(BarChartModel graficoAnimado) {
+		this.graficoAnimado = graficoAnimado;
+	}
+
 }
