@@ -7,47 +7,107 @@
 
 <h:head>
 	<title>Previdência Privada</title>
+	<h:outputStylesheet library="css" name="bootstrap.min.css" />
 </h:head>
 <h:body>
 	<h:form>
 		<p:messages />
-		<p:panel header="Cálculo de Previdência Privada">
-			<p:panelGrid columns="2">
-				<p:outputLabel value="Nome: " />
-				<p:inputText
-					value="#{calculoPrevidenciaPrivadaController.calculoPrevidenciaVO.nome}"
-					required="true" requiredMessage="Por favor, Informe o nome" />
-				<p:outputLabel value="Salário: " />
-				<p:inputNumber
-					value="#{calculoPrevidenciaPrivadaController.calculoPrevidenciaVO.salario}"
-					maxlength="10" required="true" minValue="0"
-					requiredMessage="Por favor, Informe o salário" />
-				<p:outputLabel value="Contribuição X: " />
-				<p:inputMask
-					value="#{calculoPrevidenciaPrivadaController.calculoPrevidenciaVO.contribuicaoX}"
-					required="true" mask="9.?99%"
-					requiredMessage="Por favor, Informe a porcentagem da contribuição X" />
-				<p:outputLabel value="Contribuição Y: " />
-				<p:inputMask
-					value="#{calculoPrevidenciaPrivadaController.calculoPrevidenciaVO.contribuicaoY}"
-					required="true" mask="9.?99%"
-					requiredMessage="Por favor, Informe a porcentagem da contribuição Y" />
-				<p:outputLabel value="Tempo de Contribuição: " />
-				<p:inputMask maxlength="2"
-					value="#{calculoPrevidenciaPrivadaController.calculoPrevidenciaVO.tempoContribuicao}"
-					required="true"
-					requiredMessage="Por favor, Informe o tempo de contribuição"
-					mask="9?9" />
-				<p:commandButton value="Simular"
-					action="#{calculoPrevidenciaPrivadaController.calcular}"
-					ajax="false" icon="ui-icon-calculator" update="grafico" />
-			</p:panelGrid>
-		</p:panel>
+		<div style="width: 90%; margin-left: 5%; margin-top: 10px;">
 
+			<p:panel header="Cálculo de Previdência Privada"
+				styleClass="panel panel-primary">
+				<div class="row">
+					<div class="col-md-6">
+						<div class="col-md-4">
+							<p:outputLabel value="Nome: " />
+						</div>
+						<p:inputText
+							value="#{calculoPrevidenciaPrivadaController.calculoPrevidenciaVO.nome}"
+							required="true" requiredMessage="Por favor, Informe o nome" />
+					</div>
+					<div class="col-md-6">
+						<div class="col-md-4">
+							<p:outputLabel value="Salário: " />
+						</div>
+						<p:inputNumber
+							value="#{calculoPrevidenciaPrivadaController.calculoPrevidenciaVO.salario}"
+							maxlength="10" required="true" minValue="0"
+							requiredMessage="Por favor, Informe o salário" />
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-6">
+						<div class="col-md-4">
+							<p:outputLabel value="Contribuição X: " />
+						</div>
+						<p:inputMask
+							value="#{calculoPrevidenciaPrivadaController.calculoPrevidenciaVO.contribuicaoX}"
+							required="true" mask="9.?99%"
+							requiredMessage="Por favor, Informe a porcentagem da contribuição X" />
+					</div>
+					<div class="col-md-6">
+						<div class="col-md-4">
+							<p:outputLabel value="Contribuição Y: " />
+						</div>
+						<p:inputMask
+							value="#{calculoPrevidenciaPrivadaController.calculoPrevidenciaVO.contribuicaoY}"
+							required="true" mask="9.?99%"
+							requiredMessage="Por favor, Informe a porcentagem da contribuição Y" />
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-6">
+						<div class="col-md-4">
+							<p:outputLabel value="Tempo de Contribuição: " />
+						</div>
+						<p:inputMask maxlength="2"
+							value="#{calculoPrevidenciaPrivadaController.calculoPrevidenciaVO.tempoContribuicao}"
+							required="true"
+							requiredMessage="Por favor, Informe o tempo de contribuição"
+							mask="9?9" />
+					</div>
+				</div>
+				<div align="center">
+					<h:commandButton value="Simular"
+						action="#{calculoPrevidenciaPrivadaController.calcular}"
+						ajax="false" icon="ui-icon-calculator" update="grafico, idX, idY"
+						styleClass="btn btn-primary" />
+				</div>
+			</p:panel>
+		</div>
 		<div align="center" style="margin-top: 50px;">
 			<p:chart type="bar"
 				model="#{calculoPrevidenciaPrivadaController.grafico}"
 				style="width:80%;" responsive="true" />
+		</div>
+
+		<div style="width: 75%; margin-top: 50px;" align="center">
+			<div class="row">
+				<div class="col-md-6">
+					<div class="col-md-4">
+						<h:outputLabel value="Total do Fundo X: " id="idX"
+							rendered="#{calculoPrevidenciaPrivadaController.fundosVO.fundoX > 0.0}" />
+					</div>
+					<h:outputText
+						value="#{calculoPrevidenciaPrivadaController.fundosVO.fundoX}"
+						styleClass="label label-info">
+						<f:convertNumber minFractionDigits="2" />
+					</h:outputText>
+				</div>
+				<div class="col-md-6">
+					<div class="col-md-4">
+						<h:outputLabel value="Total do Fundo Y: " id="idY"
+						rendered="#{calculoPrevidenciaPrivadaController.fundosVO.fundoY > 0.0}"/>
+					</div>
+					<h:outputText
+						value="#{calculoPrevidenciaPrivadaController.fundosVO.fundoY}"
+						styleClass="label label-info">
+						<f:convertNumber minFractionDigits="2" />
+					</h:outputText>
+				</div>
+			</div>
 		</div>
 
 	</h:form>

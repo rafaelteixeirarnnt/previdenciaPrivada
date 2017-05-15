@@ -21,6 +21,7 @@ import br.com.quality.builder.CalculoPrevidenciaBuilder;
 import br.com.quality.business.CalculoPrevidenciaPrivadaRN;
 import br.com.quality.util.Constantes;
 import br.com.quality.vo.CalculoPrevidenciaVO;
+import br.com.quality.vo.FundosVO;
 import br.com.quality.vo.ProjecaoVO;
 import lombok.Getter;
 import lombok.Setter;
@@ -42,6 +43,10 @@ public class CalculoPrevidenciaPrivadaController implements Serializable {
 	@Inject
 	private CalculoPrevidenciaPrivadaRN calculoPrevidenciaPrivadaRN;
 
+	@Getter
+	@Setter
+	private FundosVO fundosVO;
+
 	@PostConstruct
 	public void inicializar() {
 		CalculoPrevidenciaBuilder builder = new CalculoPrevidenciaBuilder();
@@ -54,6 +59,8 @@ public class CalculoPrevidenciaPrivadaController implements Serializable {
 		if (validarCampos(calculoPrevidenciaVO)) {
 			List<ProjecaoVO> projecaoVOs = calculoPrevidenciaPrivadaRN.calcular(calculoPrevidenciaVO);
 			apresentarGrafico(projecaoVOs);
+			ProjecaoVO projecaoVO = projecaoVOs.get(projecaoVOs.size() - 1);
+			setFundosVO(projecaoVO.getFundosVO());
 			inicializar();
 		}
 	}
@@ -63,8 +70,8 @@ public class CalculoPrevidenciaPrivadaController implements Serializable {
 		ChartSeries linhaX = new ChartSeries();
 		ChartSeries linhaY = new ChartSeries();
 
-		linhaX.setLabel("Contribui��o X");
-		linhaY.setLabel("Contribui��o Y");
+		linhaX.setLabel("Contribui\u00e7\u00e3o X");
+		linhaY.setLabel("Contribui\u00e7\u00e3o Y");
 		calculoPrevidenciaVO.setGraficoAnimado(popularGrafico(projecaoVOs, linhaX, linhaY, model));
 		grafico = calculoPrevidenciaVO.getGraficoAnimado();
 
@@ -94,9 +101,9 @@ public class CalculoPrevidenciaPrivadaController implements Serializable {
 		boolean valido = true;
 		valido = validarNome(cp, valido);
 		valido = validarContribuicao(cp.getContribuicaoX(), Constantes.CONTRIBUICAO_MINIMA_X,
-				Constantes.CONTRIBUICAO_MAXIMA_X, valido, " X no intervalo de 1 � 4");
+				Constantes.CONTRIBUICAO_MAXIMA_X, valido, " X no intervalo de 1 \u00e0 4");
 		valido = validarContribuicao(cp.getContribuicaoY(), Constantes.CONTRIBUICAO_MINIMA_Y,
-				Constantes.CONTRIBUICAO_MAXIMA_Y, valido, " Y no intervalo de 0 � 8");
+				Constantes.CONTRIBUICAO_MAXIMA_Y, valido, " Y no intervalo de 0 \u00e0 8");
 		valido = validarSalario(cp, valido);
 		valido = validarTempoContribuicao(cp, valido);
 		return valido;
@@ -106,8 +113,8 @@ public class CalculoPrevidenciaPrivadaController implements Serializable {
 		if (!(cp.getTempoContribuicao() >= Constantes.TEMPO_MINIMO_CONTRIBUICAO
 				&& cp.getTempoContribuicao() <= Constantes.TEMPO_MAXIMO_CONTRIBUICAO)) {
 			valido = false;
-			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage("Por favor, informe o TEMPO DE CONTRIBUI��O no intervalo entre 2 � 35"));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+					"Por favor, informe o TEMPO DE CONTRIBUI\u00c7\u00c3O no intervalo entre 2 \u00e0 35"));
 		}
 		return valido;
 	}
@@ -115,7 +122,7 @@ public class CalculoPrevidenciaPrivadaController implements Serializable {
 	private boolean validarSalario(CalculoPrevidenciaVO cp, boolean valido) {
 		if (cp.getSalario() == null && cp.getSalario() > 0) {
 			valido = false;
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Por favor, informe o SAL�RIO"));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Por favor, informe o SAL\u00c1RIO"));
 		}
 		return valido;
 	}
@@ -126,7 +133,7 @@ public class CalculoPrevidenciaPrivadaController implements Serializable {
 			valido = false;
 
 			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage("Por favor, informe o CONTRIBUI��O" + cont));
+					new FacesMessage("Por favor, informe o CONTRIBUI\u00c7\u00c3O" + cont));
 		}
 		return valido;
 	}
@@ -153,6 +160,14 @@ public class CalculoPrevidenciaPrivadaController implements Serializable {
 
 	public void setGrafico(BarChartModel grafico) {
 		this.grafico = grafico;
+	}
+
+	public FundosVO getFundosVO() {
+		return fundosVO;
+	}
+
+	public void setFundosVO(FundosVO fundosVO) {
+		this.fundosVO = fundosVO;
 	}
 
 }
