@@ -99,7 +99,6 @@ public class CalculoPrevidenciaPrivadaController implements Serializable {
 
 	public boolean validarCampos(CalculoPrevidenciaVO cp) {
 		boolean valido = true;
-		valido = validarNome(cp, valido);
 		valido = validarContribuicao(cp.getContribuicaoX(), Constantes.CONTRIBUICAO_MINIMA_X,
 				Constantes.CONTRIBUICAO_MAXIMA_X, valido, " X no intervalo de 1 \u00e0 4");
 		valido = validarContribuicao(cp.getContribuicaoY(), Constantes.CONTRIBUICAO_MINIMA_Y,
@@ -133,15 +132,7 @@ public class CalculoPrevidenciaPrivadaController implements Serializable {
 			valido = false;
 
 			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage("Por favor, informe o CONTRIBUI\u00c7\u00c3O" + cont));
-		}
-		return valido;
-	}
-
-	private boolean validarNome(CalculoPrevidenciaVO calculoPrevidenciaVO, boolean valido) {
-		if (StringUtils.isBlank(calculoPrevidenciaVO.getNome())) {
-			valido = false;
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Por favor, informe o Nome"));
+					new FacesMessage("Por favor, informe a CONTRIBUI\u00c7\u00c3O" + cont));
 		}
 		return valido;
 	}

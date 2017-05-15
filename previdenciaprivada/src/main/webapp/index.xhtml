@@ -19,11 +19,13 @@
 				<div class="row">
 					<div class="col-md-6">
 						<div class="col-md-4">
-							<p:outputLabel value="Nome: " />
+							<p:outputLabel value="Tempo de Contribuição: " />
 						</div>
-						<p:inputText
-							value="#{calculoPrevidenciaPrivadaController.calculoPrevidenciaVO.nome}"
-							required="true" requiredMessage="Por favor, Informe o nome" />
+						<p:inputMask maxlength="2"
+							value="#{calculoPrevidenciaPrivadaController.calculoPrevidenciaVO.tempoContribuicao}"
+							required="true"
+							requiredMessage="Por favor, Informe o tempo de contribuição"
+							mask="9?9" />
 					</div>
 					<div class="col-md-6">
 						<div class="col-md-4">
@@ -56,19 +58,6 @@
 							requiredMessage="Por favor, Informe a porcentagem da contribuição Y" />
 					</div>
 				</div>
-
-				<div class="row">
-					<div class="col-md-6">
-						<div class="col-md-4">
-							<p:outputLabel value="Tempo de Contribuição: " />
-						</div>
-						<p:inputMask maxlength="2"
-							value="#{calculoPrevidenciaPrivadaController.calculoPrevidenciaVO.tempoContribuicao}"
-							required="true"
-							requiredMessage="Por favor, Informe o tempo de contribuição"
-							mask="9?9" />
-					</div>
-				</div>
 				<div align="center">
 					<h:commandButton value="Simular"
 						action="#{calculoPrevidenciaPrivadaController.calcular}"
@@ -99,7 +88,7 @@
 				<div class="col-md-6">
 					<div class="col-md-4">
 						<h:outputLabel value="Total do Fundo Y: " id="idY"
-						rendered="#{calculoPrevidenciaPrivadaController.fundosVO.fundoY > 0.0}"/>
+							rendered="#{calculoPrevidenciaPrivadaController.fundosVO.fundoY > 0.0}" />
 					</div>
 					<h:outputText
 						value="#{calculoPrevidenciaPrivadaController.fundosVO.fundoY}"
